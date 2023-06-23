@@ -70,11 +70,7 @@ public class HelloApplication extends Application {
         TextArea facebookPost = new TextArea();
         grid.add(facebookPost, 1, ++row);
 
-
-
-
         btn.setOnAction(new EventHandler<ActionEvent>() {
-
             @Override
             public void handle(ActionEvent e) {
                 mastadonPost.setText(converter.convert(originalTextArea.getText()));
