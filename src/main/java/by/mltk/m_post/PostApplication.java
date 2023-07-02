@@ -51,6 +51,13 @@ public class PostApplication extends Application {
         TextArea originalTextArea = new TextArea();
         grid.add(originalTextArea, column, row, 2, 1);
 
+        row++;
+
+        //link
+        TextArea linkTextArea = new TextArea();
+        linkTextArea.setMaxHeight(30);
+        grid.add(linkTextArea, column, row, 2, 1);
+
         Label mastadonLabel = new Label("Mastadon:");
         Button mastadonButton = new Button("kapiravac");
         TextArea mastadonPost = addPostElements(row, 0, grid, mastadonLabel, mastadonButton);
@@ -73,14 +80,14 @@ public class PostApplication extends Application {
 
 
         originalTextArea.setOnKeyTyped(event -> {
-            mastadonPost.setText(getText(originalTextArea.getText(), tags, BEL_TIME, Mode.MASTADON));
-            telegramPost.setText(getText(originalTextArea.getText(), tags, BEL_TIME, Mode.TELEGRAM));
+            mastadonPost.setText(getText(originalTextArea.getText(), linkTextArea.getText(), tags, BEL_TIME, Mode.MASTADON));
+            telegramPost.setText(getText(originalTextArea.getText(), linkTextArea.getText(), tags, BEL_TIME, Mode.TELEGRAM));
 
-            String twitterText = getText(originalTextArea.getText(), tags, BEL_TIME, Mode.TWITTER).trim();
+            String twitterText = getText(originalTextArea.getText(), linkTextArea.getText(), tags, BEL_TIME, Mode.TWITTER).trim();
             twitterLabel.setText("Twitter(" + twitterText.trim().length() + "):");
             twitterPost.setText(twitterText);
 
-            facebookPost.setText(getText(originalTextArea.getText(), tags, BEL_TIME, Mode.FACEBOOK));
+            facebookPost.setText(getText(originalTextArea.getText(), linkTextArea.getText(), tags, BEL_TIME, Mode.FACEBOOK));
         });
 
         Scene scene = new Scene(grid, 1000, 775);
@@ -112,11 +119,11 @@ public class PostApplication extends Application {
             case MASTADON:
                 belSymbol = ":by:";
                 break;
-            case TELEGRAM:
-                belSymbol = "❤\uFE0F";
+            case TWITTER:
+                belSymbol = "❤";
                 break;
             default:
-                belSymbol = "❤";
+                belSymbol = "❤\uFE0F";
                 break;
         }
 
@@ -128,15 +135,17 @@ public class PostApplication extends Application {
                 "\uD83C\uDDEC\uD83C\uDDEA " + georTime + ":00 pavodle hruzinskaha";
     }
 
-    private String getText(String originalText, String[] tags, Integer belTime, Mode mode) {
+    private String getText(String originalText, String link, String[] tags, Integer belTime, Mode mode) {
         StringBuilder result = new StringBuilder();
         if (mode != Mode.TWITTER) {
             result.append(buildTagString(tags));
             result.append("\n\n");
-            result.append(originalText);
+            result.append(converter.convert(originalText));
             result.append("\n\n");
         }
-        result.append(converter.convert(originalText));
+        result.append(originalText);
+        result.append("\n\n");
+        result.append(link);
         result.append("\n\n");
         result.append(buildTime(belTime, mode));
 
