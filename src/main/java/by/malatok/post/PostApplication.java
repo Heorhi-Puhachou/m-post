@@ -16,11 +16,13 @@ public class PostApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Malatok2334");
         MainView mainView = new MainView();
         Scene scene = new Scene(mainView.getGridPane(), SCENE_WIDTH, SCENE_HEIGHT);
+
+        primaryStage.setTitle("Malatok2334");
         primaryStage.setScene(scene);
         primaryStage.show();
+
         mainView.setupSizes();
     }
 }
