@@ -12,14 +12,16 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.util.function.Function;
+
 import static javafx.geometry.Pos.CENTER;
 
 public class PostApplication extends Application {
 
+    private static final double SCENE_WIDTH = 800;
+    private static final double SCENE_HEIGHT = 800;
     private static final String[] tags = {"strym", "lahiendyajzenvalda"};
-
     private static final Integer BEL_TIME = 20;
-
     private static final TaraskLacinkConverter converter = new TaraskLacinkConverter();
 
     private final Clipboard clipboard = Clipboard.getSystemClipboard();
@@ -56,7 +58,16 @@ public class PostApplication extends Application {
         //link
         TextArea linkTextArea = new TextArea();
         linkTextArea.setMaxHeight(30);
-        grid.add(linkTextArea, column, row, 2, 1);
+        grid.add(linkTextArea, column, row);
+        Button insertLinkButton = new Button("Ustavic spasylku");
+        insertLinkButton.setMinHeight(30);
+        grid.add(insertLinkButton, 1, row);
+        insertLinkButton.setOnAction(event -> linkTextArea.setText(clipboard.getString()));
+
+        row++;
+        row++;
+        row++;
+        row++;
 
         Label mastadonLabel = new Label("Mastadon:");
         Button mastadonButton = new Button("kapiravac");
@@ -78,22 +89,29 @@ public class PostApplication extends Application {
         Button facebookButton = new Button("kapiravac");
         TextArea facebookPost = addPostElements(row, 1, grid, facebookLabel, facebookButton);
 
+        final Function<Mode, String> prepareText = mode -> getText(
+                originalTextArea.getText(),
+                linkTextArea.getText().trim(),
+                tags,
+                BEL_TIME,
+                mode);
 
         originalTextArea.setOnKeyTyped(event -> {
-            mastadonPost.setText(getText(originalTextArea.getText(), linkTextArea.getText(), tags, BEL_TIME, Mode.MASTADON));
-            telegramPost.setText(getText(originalTextArea.getText(), linkTextArea.getText(), tags, BEL_TIME, Mode.TELEGRAM));
+            mastadonPost.setText(prepareText.apply(Mode.MASTADON));
+            telegramPost.setText(prepareText.apply(Mode.TELEGRAM));
 
-            String twitterText = getText(originalTextArea.getText(), linkTextArea.getText(), tags, BEL_TIME, Mode.TWITTER).trim();
-            twitterLabel.setText("Twitter(" + twitterText.trim().length() + "):");
+            String twitterText = prepareText.apply(Mode.TWITTER);
+            twitterLabel.setText("Twitter(" + twitterText.length() + "):");
             twitterPost.setText(twitterText);
 
-            facebookPost.setText(getText(originalTextArea.getText(), linkTextArea.getText(), tags, BEL_TIME, Mode.FACEBOOK));
+            facebookPost.setText(prepareText.apply(Mode.FACEBOOK));
         });
 
-        Scene scene = new Scene(grid, 1000, 775);
+        Scene scene = new Scene(grid, SCENE_WIDTH, SCENE_HEIGHT);
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        insertLinkButton.setMinWidth(facebookPost.getWidth());
         setStandardButtonSize(facebookButton, facebookPost.getWidth());
         setStandardButtonSize(twitterButton, facebookPost.getWidth());
         setStandardButtonSize(telegramButton, facebookPost.getWidth());
@@ -137,19 +155,17 @@ public class PostApplication extends Application {
 
     private String getText(String originalText, String link, String[] tags, Integer belTime, Mode mode) {
         StringBuilder result = new StringBuilder();
-        if (mode != Mode.TWITTER) {
-            result.append(buildTagString(tags));
-            result.append("\n\n");
-            result.append(converter.convert(originalText));
-            result.append("\n\n");
-        }
+        result.append(buildTagString(tags));
+        result.append("\n\n");
+        result.append(converter.convert(originalText));
+        result.append("\n\n");
         result.append(originalText);
         result.append("\n\n");
         result.append(link);
         result.append("\n\n");
         result.append(buildTime(belTime, mode));
 
-        return result.toString();
+        return result.toString().trim();
     }
 
     private TextArea addPostElements(Integer row,
