@@ -1,14 +1,11 @@
-package by.mltk.m_post;
+package by.malatok.post;
 
 import by.spelling.conversion.converter.lacink.TaraskLacinkConverter;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -24,20 +21,18 @@ public class PostApplication extends Application {
     private static final Integer BEL_TIME = 20;
     private static final TaraskLacinkConverter converter = new TaraskLacinkConverter();
 
-    private final Clipboard clipboard = Clipboard.getSystemClipboard();
-    private final ClipboardContent content = new ClipboardContent();
 
     public static void main(String[] args) {
         launch();
     }
 
-    private void stringToClipboard(String string) {
-        content.putString(string);
-        clipboard.setContent(content);
-    }
-
     @Override
     public void start(Stage primaryStage) {
+        PostBox mastadonBox = new PostBox("Mastadon:");
+        PostBox telegramBox = new PostBox("Telegram:");
+        PostBox twitterBox = new PostBox("Twitter:");
+        PostBox facebookBox = new PostBox("Facebook:");
+
         int row = 0;
         int column = 0;
 
@@ -62,32 +57,17 @@ public class PostApplication extends Application {
         Button insertLinkButton = new Button("Ustavic spasylku");
         insertLinkButton.setMinHeight(30);
         grid.add(insertLinkButton, 1, row);
-        insertLinkButton.setOnAction(event -> linkTextArea.setText(clipboard.getString()));
+        insertLinkButton.setOnAction(event -> linkTextArea.setText(SingleClipboard.getInstance().getString()));
 
         row++;
-        row++;
-        row++;
-        row++;
 
-        Label mastadonLabel = new Label("Mastadon:");
-        Button mastadonButton = new Button("kapiravac");
-        TextArea mastadonPost = addPostElements(row, 0, grid, mastadonLabel, mastadonButton);
-
-        Label telegramLabel = new Label("Telegram:");
-        Button telegramButton = new Button("kapiravac");
-        TextArea telegramPost = addPostElements(row, 1, grid, telegramLabel, telegramButton);
+        grid.add(mastadonBox, 0, row);
+        grid.add(telegramBox, 1, row);
 
         row++;
-        row++;
-        row++;
 
-        Label twitterLabel = new Label("Twitter:");
-        Button twitterButton = new Button("kapiravac");
-        TextArea twitterPost = addPostElements(row, 0, grid, twitterLabel, twitterButton);
-
-        Label facebookLabel = new Label("Facebook:");
-        Button facebookButton = new Button("kapiravac");
-        TextArea facebookPost = addPostElements(row, 1, grid, facebookLabel, facebookButton);
+        grid.add(twitterBox, 0, row);
+        grid.add(facebookBox, 1, row);
 
         final Function<Mode, String> prepareText = mode -> getText(
                 originalTextArea.getText(),
@@ -97,25 +77,25 @@ public class PostApplication extends Application {
                 mode);
 
         originalTextArea.setOnKeyTyped(event -> {
-            mastadonPost.setText(prepareText.apply(Mode.MASTADON));
-            telegramPost.setText(prepareText.apply(Mode.TELEGRAM));
+            mastadonBox.setPostText(prepareText.apply(Mode.MASTADON));
+            telegramBox.setPostText(prepareText.apply(Mode.TELEGRAM));
 
             String twitterText = prepareText.apply(Mode.TWITTER);
-            twitterLabel.setText("Twitter(" + twitterText.length() + "):");
-            twitterPost.setText(twitterText);
+            twitterBox.setLabelText("Twitter(" + twitterText.length() + "):");
+            twitterBox.setPostText(twitterText);
 
-            facebookPost.setText(prepareText.apply(Mode.FACEBOOK));
+            facebookBox.setPostText(prepareText.apply(Mode.FACEBOOK));
         });
 
         Scene scene = new Scene(grid, SCENE_WIDTH, SCENE_HEIGHT);
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        insertLinkButton.setMinWidth(facebookPost.getWidth());
-        setStandardButtonSize(facebookButton, facebookPost.getWidth());
-        setStandardButtonSize(twitterButton, facebookPost.getWidth());
-        setStandardButtonSize(telegramButton, facebookPost.getWidth());
-        setStandardButtonSize(mastadonButton, facebookPost.getWidth());
+        insertLinkButton.setMinWidth(linkTextArea.getWidth());
+        //setStandardButtonSize(facebookButton, mastadonPost.getWidth());
+        //setStandardButtonSize(twitterButton, mastadonPost.getWidth());
+        //setStandardButtonSize(telegramButton, mastadonPost.getWidth());
+        //setStandardButtonSize(mastadonButton, mastadonPost.getWidth());
     }
 
     private void setStandardButtonSize(Button button, double width) {
@@ -166,19 +146,5 @@ public class PostApplication extends Application {
         result.append(buildTime(belTime, mode));
 
         return result.toString().trim();
-    }
-
-    private TextArea addPostElements(Integer row,
-                                     Integer column,
-                                     GridPane grid,
-                                     Label label,
-                                     Button button) {
-        grid.add(label, column, ++row);
-        TextArea post = new TextArea();
-        grid.add(post, column, ++row);
-        grid.add(button, column, ++row);
-
-        button.setOnAction(event -> stringToClipboard(post.getText()));
-        return post;
     }
 }

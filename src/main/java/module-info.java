@@ -1,9 +1,9 @@
-module by.mltk.m_post {
+module by.malatok.post {
     requires javafx.controls;
     requires javafx.fxml;
     requires converter;
 
 
-    opens by.mltk.m_post to javafx.fxml;
-    exports by.mltk.m_post;
+    opens by.malatok.post to javafx.fxml;
+    exports by.malatok.post;
 }

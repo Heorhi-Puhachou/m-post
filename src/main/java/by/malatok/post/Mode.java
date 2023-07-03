@@ -1,4 +1,4 @@
-package by.mltk.m_post;
+package by.malatok.post;
 
 public enum Mode {
     MASTADON,
