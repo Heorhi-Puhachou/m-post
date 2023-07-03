@@ -14,6 +14,7 @@ public class MainView {
 
     private static final String[] tags = {"strym", "lahiendyajzenvalda"};
     private static final Integer BEL_TIME = 20;
+    private static final Integer SPACING = 10;
 
     private final LinkBox linkBox;
     private final TextArea originalTextArea;
@@ -21,7 +22,6 @@ public class MainView {
     private final PostBox telegramBox;
     private final PostBox twitterBox;
     private final PostBox facebookBox;
-
     private final GridPane gridPane;
 
     public MainView() {
@@ -31,7 +31,6 @@ public class MainView {
         telegramBox = new PostBox("Telegram:");
         twitterBox = new PostBox("Twitter:");
         facebookBox = new PostBox("Facebook:");
-
         gridPane = addElementsToView();
         setupTextHandler();
     }
@@ -42,8 +41,8 @@ public class MainView {
 
         GridPane grid = new GridPane();
         grid.setAlignment(CENTER);
-        grid.setHgap(10);
-        grid.setVgap(10);
+        grid.setHgap(SPACING);
+        grid.setVgap(SPACING);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
         grid.add(linkBox, column, row, 2, 1);
@@ -92,6 +91,6 @@ public class MainView {
         facebookBox.setupSizes();
 
         double elementWidth = mastadonBox.getElementWidth();
-        linkBox.setupSizes(elementWidth);
+        linkBox.setupSizes(elementWidth, 30, SPACING);
     }
 }

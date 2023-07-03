@@ -1,7 +1,6 @@
 package by.malatok.post.ui;
 
 import by.malatok.post.util.SingleClipboard;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -29,10 +28,6 @@ public class PostBox extends VBox {
         post.setText(postText);
     }
 
-    public String getPostText() {
-        return post.getText();
-    }
-
     public void setLabelText(String labelText) {
         label.setText(labelText);
     }
@@ -43,7 +38,6 @@ public class PostBox extends VBox {
 
     public void setupSizes(double width) {
         copyButton.setMinWidth(width);
-        copyButton.setPadding(new Insets(0, 0, 0, 0));
         copyButton.setMinHeight(60);
         post.setMinWidth(width);
         post.setMaxWidth(width);

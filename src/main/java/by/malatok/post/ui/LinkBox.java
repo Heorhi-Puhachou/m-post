@@ -12,14 +12,9 @@ public class LinkBox extends HBox {
 
     public LinkBox() {
         super();
-
         linkTextArea = new TextArea();
-        linkTextArea.setMaxHeight(30);
-
         insertLinkButton = new Button("Ustavic spasylku");
-        insertLinkButton.setMinHeight(30);
         insertLinkButton.setOnAction(event -> linkTextArea.setText(SingleClipboard.getInstance().getString()));
-
         this.getChildren().add(linkTextArea);
         this.getChildren().add(insertLinkButton);
     }
@@ -28,14 +23,15 @@ public class LinkBox extends HBox {
         return linkTextArea.getText().trim();
     }
 
-    public void setupSizes(double columnWidth) {
-        this.setSpacing(10);
-        linkTextArea.setMinWidth(columnWidth);
-        insertLinkButton.setMinWidth(columnWidth);
+    public void setupSizes(double columnWidth, double columnHeight, double spacing) {
+        this.setSpacing(spacing);
 
-        linkTextArea.setMaxHeight(30);
-        linkTextArea.setMinHeight(30);
-        insertLinkButton.setMaxHeight(30);
-        insertLinkButton.setMinHeight(30);
+        linkTextArea.setMinWidth(columnWidth);
+        linkTextArea.setMaxHeight(columnHeight);
+        linkTextArea.setMinHeight(columnHeight);
+
+        insertLinkButton.setMinWidth(columnWidth);
+        insertLinkButton.setMaxHeight(columnHeight);
+        insertLinkButton.setMinHeight(columnHeight);
     }
 }
