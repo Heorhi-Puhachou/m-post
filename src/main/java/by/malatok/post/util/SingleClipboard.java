@@ -1,4 +1,4 @@
-package by.malatok.post;
+package by.malatok.post.util;
 
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;

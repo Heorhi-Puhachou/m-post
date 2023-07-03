@@ -6,4 +6,8 @@ module by.malatok.post {
 
     opens by.malatok.post to javafx.fxml;
     exports by.malatok.post;
+    exports by.malatok.post.ui;
+    opens by.malatok.post.ui to javafx.fxml;
+    exports by.malatok.post.util;
+    opens by.malatok.post.util to javafx.fxml;
 }
