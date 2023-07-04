@@ -16,7 +16,7 @@ public class PostBox extends VBox {
         super();
         label = new Label(labelText);
         post = new TextArea();
-        copyButton = new Button("kapiravac");
+        copyButton = new Button("U bufier");
         copyButton.setOnAction(event -> SingleClipboard.getInstance().putStringToClipboard(post.getText()));
 
         this.getChildren().add(label);

@@ -19,7 +19,7 @@ public class PostApplication extends Application {
         MainView mainView = new MainView();
         Scene scene = new Scene(mainView.getGridPane(), SCENE_WIDTH, SCENE_HEIGHT);
 
-        primaryStage.setTitle("Malatok2334");
+        primaryStage.setTitle("M-2334");
         primaryStage.setScene(scene);
         primaryStage.show();
 

@@ -13,7 +13,7 @@ public class LinkBox extends HBox {
     public LinkBox() {
         super();
         linkTextArea = new TextArea();
-        insertLinkButton = new Button("Ustavic spasylku");
+        insertLinkButton = new Button("Dadać spasyłku");
         insertLinkButton.setOnAction(event -> linkTextArea.setText(SingleClipboard.getInstance().getString()));
         this.getChildren().add(linkTextArea);
         this.getChildren().add(insertLinkButton);
