@@ -1,19 +1,19 @@
 package by.malatok.post.util;
 
-import by.spelling.conversion.converter.lacink.TaraskLacinkConverter;
+import by.spelling.conversion.converter.l.KLKanvertar;
 
 public class TextHandler {
 
-    private final TaraskLacinkConverter converter;
+    private final KLKanvertar kanvertar;
 
     public TextHandler() {
-        converter = new TaraskLacinkConverter();
+        kanvertar = new KLKanvertar();
     }
 
     public String getText(String originalText, String link, String[] tags, Integer belTime, Mode mode) {
         String result = buildTagString(tags) +
                 "\n\n" +
-                converter.convert(originalText) +
+                kanvertar.kanvertavać(originalText) +
                 "\n\n" +
                 originalText +
                 "\n\n" +
