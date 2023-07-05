@@ -2,6 +2,8 @@ package by.malatok.post.util;
 
 import by.spelling.conversion.converter.l.KLKanvertar;
 
+import static by.malatok.post.util.TextSize.SMALL;
+
 public class TextHandler {
 
     private final KLKanvertar kanvertar;
@@ -11,16 +13,21 @@ public class TextHandler {
     }
 
     public String getText(String originalText, String link, String[] tags, Integer belTime, Mode mode) {
-        String result = buildTagString(tags) +
-                "\n\n" +
-                kanvertar.kanvertavać(originalText) +
-                "\n\n" +
-                originalText +
-                "\n\n" +
-                link +
-                "\n\n" +
-                buildTime(belTime, mode);
-        return result.trim();
+        StringBuilder result = new StringBuilder();
+        if (mode.geTextSize() != SMALL) {
+            result.append(buildTagString(tags));
+            result.append("\n\n");
+        }
+        result.append(kanvertar.kanvertavać(originalText));
+        result.append("\n\n");
+        if (mode.geTextSize() != SMALL) {
+            result.append(originalText);
+            result.append("\n\n");
+        }
+        result.append(link);
+        result.append("\n\n");
+        result.append(buildTime(belTime, mode));
+        return result.toString().trim();
     }
 
     private String buildTagString(String[] tags) {
