@@ -12,8 +12,18 @@ public class TextHandler {
         kanvertar = new KLKanvertar();
     }
 
-    public String getText(String originalText, String link, String[] tags, Integer belTime, Mode mode) {
+    public String getText(String originalText, String link, String[] tags, Integer belTimeHours, Integer belTimeMinutes, Mode mode) {
+
         StringBuilder result = new StringBuilder();
+
+        if (mode == Mode.TEXT) {
+            result.append(kanvertar.kanvertavać(originalText));
+            result.append("\n\n");
+            result.append(originalText);
+            return result.toString().trim();
+        }
+
+
         if (mode.geTextSize() != SMALL) {
             result.append(buildTagString(tags));
             result.append("\n\n");
@@ -26,7 +36,7 @@ public class TextHandler {
         }
         result.append(link);
         result.append("\n\n");
-        result.append(buildTime(belTime, mode));
+        result.append(buildTime(belTimeHours, belTimeMinutes, mode));
         return result.toString().trim();
     }
 
@@ -38,12 +48,12 @@ public class TextHandler {
         return tagRow.trim();
     }
 
-    private String buildTime(Integer belTime, Mode mode) {
-        int polTime = belTime - 1;
-        int georTime = belTime + 1;
+    private String buildTime(Integer belTimeHours, Integer belTimeMinutes, Mode mode) {
+        int polTime = belTimeHours - 1;
+        int georTime = belTimeHours + 1;
 
-        return mode.getBelSymbol() + " " + belTime + ":00 pavodle biełaruskaha času\n" +
-                "\uD83C\uDDF5\uD83C\uDDF1 " + polTime + ":00 pavodle polskaha\n" +
-                "\uD83C\uDDEC\uD83C\uDDEA " + georTime + ":00 pavodle hruzinskaha";
+        return mode.getBelSymbol() + " " + belTimeHours + ":" + belTimeMinutes + " pavodle biełaruskaha času\n" +
+                "\uD83C\uDDF5\uD83C\uDDF1 " + polTime + ":" + belTimeMinutes + " pavodle polskaha\n" +
+                "\uD83C\uDDEC\uD83C\uDDEA " + georTime + ":" + belTimeMinutes + " pavodle hruzinskaha";
     }
 }

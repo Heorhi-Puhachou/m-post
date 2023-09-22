@@ -12,11 +12,14 @@ import static javafx.geometry.Pos.CENTER;
 
 public class MainView {
 
-    private static final String[] tags = {"strym", "lahiendyajzenvalda"};
-    private static final Integer BEL_TIME = 20;
+    private static final String[] tags = {"seryjał", "žachi", "silenthill"};
+    private static final Integer BEL_TIME_HOURS = 21;
+    private static final Integer BEL_TIME_MINUTES = 30;
     private static final Integer SPACING = 10;
 
     private final LinkBox linkBox;
+    private final TextBox textBox;
+
     private final TextArea originalTextArea;
     private final PostBox mastadonBox;
     private final PostBox telegramBox;
@@ -26,6 +29,7 @@ public class MainView {
 
     public MainView() {
         linkBox = new LinkBox();
+        textBox = new TextBox();
         originalTextArea = new TextArea();
         mastadonBox = new PostBox("Mastadon:");
         telegramBox = new PostBox("Telegram:");
@@ -49,6 +53,8 @@ public class MainView {
         row++;
         grid.add(originalTextArea, column, row, 2, 1);
         row++;
+        grid.add(textBox, column, row, 2, 1);
+        row++;
         grid.add(mastadonBox, 0, row);
         grid.add(telegramBox, 1, row);
         row++;
@@ -65,13 +71,15 @@ public class MainView {
                 originalTextArea.getText(),
                 linkBox.getLink(),
                 tags,
-                BEL_TIME,
+                BEL_TIME_HOURS,
+                BEL_TIME_MINUTES,
                 mode);
 
         originalTextArea.setOnKeyTyped(event -> {
             mastadonBox.setPostText(prepareText.apply(Mode.MASTADON));
             telegramBox.setPostText(prepareText.apply(Mode.TELEGRAM));
             facebookBox.setPostText(prepareText.apply(Mode.FACEBOOK));
+            textBox.setText(prepareText.apply(Mode.TEXT));
 
             //Pakazac kolkasc symbalau dla Twitter
             String twitterText = prepareText.apply(Mode.TWITTER);
