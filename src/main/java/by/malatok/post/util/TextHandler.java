@@ -2,56 +2,84 @@ package by.malatok.post.util;
 
 import by.spelling.conversion.converter.l.KLKanvertar;
 
-import static by.malatok.post.util.TextSize.SMALL;
-
 public class TextHandler {
 
     private final KLKanvertar kanvertar;
+    private final SingletonConstantStorage singletonConstantStorage;
 
     public TextHandler() {
         kanvertar = new KLKanvertar();
+        singletonConstantStorage = SingletonConstantStorage.getInstance();
     }
 
-    public String getText(String originalText, String link, String[] tags, Integer belTimeHours, Integer belTimeMinutes, Mode mode) {
+    public String getText(String originalText, String link, Mode mode) {
+
+        final String[] tags;
+        if (mode == Mode.YOUTUBE) {
+            tags = singletonConstantStorage.getYoutubeTags();
+        } else {
+            tags = singletonConstantStorage.getPostTags();
+        }
 
         StringBuilder result = new StringBuilder();
 
-        if (mode == Mode.TEXT) {
+        if (mode == Mode.MASTADON) {
+            result.append(buildTagString(tags));
+            result.append("\n\n");
             result.append(kanvertar.kanvertavać(originalText));
             result.append("\n\n");
             result.append("***");
             result.append("\n\n");
             result.append(originalText);
+            result.append("\n\n");
+            result.append(link);
+            result.append("\n");
+            result.append(link);
+            result.append("\n");
+            result.append(link);
+            result.append("\n\n");
+            result.append(buildTime(mode));
             return result.toString().trim();
         }
 
-
-        if (mode.geTextSize() != SMALL) {
-            result.append(buildTagString(tags));
+        if (mode == Mode.YOUTUBE) {
+            result.append(kanvertar.kanvertavać(originalText));
             result.append("\n\n");
-        }
-        result.append(kanvertar.kanvertavać(originalText));
-        result.append("\n\n");
-        if (mode.geTextSize() != SMALL) {
+            result.append("***");
+            result.append("\n\n");
             result.append(originalText);
             result.append("\n\n");
+            result.append(buildTagString(tags));
+            return result.toString().trim();
         }
+
+        // if (mode == Mode.TELEGRAM || mode == Mode.FACEBOOK) {
+        result.append(buildTagString(tags));
+        result.append("\n\n");
+        result.append(kanvertar.kanvertavać(originalText));
+        result.append("\n\n");
+        result.append("***");
+        result.append("\n\n");
+        result.append(originalText);
+        result.append("\n\n");
         result.append(link);
         result.append("\n\n");
-        result.append(buildTime(belTimeHours, belTimeMinutes, mode));
+        result.append(buildTime(mode));
         return result.toString().trim();
     }
 
     private String buildTagString(String[] tags) {
-        String tagRow = "";
+        StringBuilder tagRow = new StringBuilder();
         for (String tag : tags) {
-            tagRow = tagRow + " #" + tag;
+            tagRow.append(" #").append(tag);
         }
-        return tagRow.trim();
+        return tagRow.toString().trim();
     }
 
-    private String buildTime(Integer belTimeHours, Integer belTimeMinutes, Mode mode) {
-        int polTime = belTimeHours - 1;
+    private String buildTime(Mode mode) {
+        Integer belTimeHours = singletonConstantStorage.getBEL_TIME_HOURS();
+        Integer belTimeMinutes = singletonConstantStorage.getBEL_TIME_MINUTES();
+        int polTime = belTimeHours - singletonConstantStorage.getBEL_POL_HOUR_SHIFT();
         int georTime = belTimeHours + 1;
 
         return mode.getBelSymbol() + " " + belTimeHours + ":" + belTimeMinutes + " pavodle biełaruskaha času\n" +

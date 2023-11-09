@@ -12,28 +12,22 @@ import static javafx.geometry.Pos.CENTER;
 
 public class MainView {
 
-    private static final String[] tags = {"strym", "disciples"};
-    private static final Integer BEL_TIME_HOURS = 21;
-    private static final Integer BEL_TIME_MINUTES = 30;
     private static final Integer SPACING = 10;
 
     private final LinkBox linkBox;
-    private final TextBox textBox;
-
     private final TextArea originalTextArea;
     private final PostBox mastadonBox;
     private final PostBox telegramBox;
-    private final PostBox twitterBox;
+    private final PostBox youtubeBox;
     private final PostBox facebookBox;
     private final GridPane gridPane;
 
     public MainView() {
         linkBox = new LinkBox();
-        textBox = new TextBox();
         originalTextArea = new TextArea();
         mastadonBox = new PostBox("Mastadon:");
         telegramBox = new PostBox("Telegram:");
-        twitterBox = new PostBox("Twitter:");
+        youtubeBox = new PostBox("YouTube:");
         facebookBox = new PostBox("Facebook:");
         gridPane = addElementsToView();
         setupTextHandler();
@@ -51,14 +45,15 @@ public class MainView {
 
         grid.add(linkBox, column, row, 2, 1);
         row++;
+
         grid.add(originalTextArea, column, row, 2, 1);
         row++;
-        grid.add(textBox, column, row, 2, 1);
+
+        grid.add(youtubeBox, 0, row);
+        grid.add(mastadonBox, 1, row);
         row++;
-        grid.add(mastadonBox, 0, row);
-        grid.add(telegramBox, 1, row);
-        row++;
-        grid.add(twitterBox, 0, row);
+
+        grid.add(telegramBox, 0, row);
         grid.add(facebookBox, 1, row);
 
         return grid;
@@ -67,24 +62,21 @@ public class MainView {
     private void setupTextHandler() {
         TextHandler textHandler = new TextHandler();
 
-        final Function<Mode, String> prepareText = mode -> textHandler.getText(
-                originalTextArea.getText(),
-                linkBox.getLink(),
-                tags,
-                BEL_TIME_HOURS,
-                BEL_TIME_MINUTES,
-                mode);
+
+        final Function<Mode, String> prepareText = mode -> {
+
+
+            return textHandler.getText(
+                    originalTextArea.getText(),
+                    linkBox.getLink(),
+                    mode);
+        };
 
         originalTextArea.setOnKeyTyped(event -> {
             mastadonBox.setPostText(prepareText.apply(Mode.MASTADON));
             telegramBox.setPostText(prepareText.apply(Mode.TELEGRAM));
             facebookBox.setPostText(prepareText.apply(Mode.FACEBOOK));
-            textBox.setText(prepareText.apply(Mode.TEXT));
-
-            //Pakazac kolkasc symbalau dla Twitter
-            String twitterText = prepareText.apply(Mode.TWITTER);
-            twitterBox.setLabelText("Twitter(" + twitterText.length() + "):");
-            twitterBox.setPostText(twitterText);
+            youtubeBox.setPostText(prepareText.apply(Mode.YOUTUBE));
         });
     }
 
@@ -95,7 +87,7 @@ public class MainView {
     public void setupSizes() {
         mastadonBox.setupSizes();
         telegramBox.setupSizes();
-        twitterBox.setupSizes();
+        youtubeBox.setupSizes();
         facebookBox.setupSizes();
 
         double elementWidth = mastadonBox.getElementWidth();
