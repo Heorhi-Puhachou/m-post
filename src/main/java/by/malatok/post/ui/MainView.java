@@ -12,7 +12,7 @@ import static javafx.geometry.Pos.CENTER;
 
 public class MainView {
 
-    private static final String[] tags = {"seryjał", "žachi", "silenthill"};
+    private static final String[] tags = {"strym", "disciples"};
     private static final Integer BEL_TIME_HOURS = 21;
     private static final Integer BEL_TIME_MINUTES = 30;
     private static final Integer SPACING = 10;

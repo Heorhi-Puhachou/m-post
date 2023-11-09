@@ -19,6 +19,8 @@ public class TextHandler {
         if (mode == Mode.TEXT) {
             result.append(kanvertar.kanvertavać(originalText));
             result.append("\n\n");
+            result.append("***");
+            result.append("\n\n");
             result.append(originalText);
             return result.toString().trim();
         }
