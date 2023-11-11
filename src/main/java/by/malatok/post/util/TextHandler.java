@@ -2,6 +2,9 @@ package by.malatok.post.util;
 
 import by.spelling.conversion.converter.l.KLKanvertar;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class TextHandler {
 
     private final KLKanvertar kanvertar;
@@ -82,7 +85,13 @@ public class TextHandler {
         int polTime = belTimeHours - singletonConstantStorage.getBEL_POL_HOUR_SHIFT();
         int georTime = belTimeHours + 1;
 
-        return mode.getBelSymbol() + " " + belTimeHours + ":" + belTimeMinutes + " pavodle biełaruskaha času\n" +
+        String DATE_FORMAT_NOW = "yyyy.MM.dd";
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
+
+        return sdf.format(cal.getTime())
+                + "\n\n"
+                + mode.getBelSymbol() + " " + belTimeHours + ":" + belTimeMinutes + " pavodle biełaruskaha času\n" +
                 "\uD83C\uDDF5\uD83C\uDDF1 " + polTime + ":" + belTimeMinutes + " pavodle polskaha\n" +
                 "\uD83C\uDDEC\uD83C\uDDEA " + georTime + ":" + belTimeMinutes + " pavodle hruzinskaha";
     }
