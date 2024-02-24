@@ -41,7 +41,7 @@ public class PostBox extends VBox {
         copyButton.setMinHeight(60);
         post.setMinWidth(width);
         post.setMaxWidth(width);
-        post.setMinHeight(250);
+        post.setMinHeight(450);
     }
 
     public double getElementWidth() {

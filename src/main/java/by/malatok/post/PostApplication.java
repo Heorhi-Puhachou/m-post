@@ -1,5 +1,6 @@
 package by.malatok.post;
 
+import by.malatok.post.setup.Tags;
 import by.malatok.post.ui.MainView;
 import by.malatok.post.util.SingletonConstantStorage;
 import javafx.application.Application;
@@ -8,7 +9,7 @@ import javafx.stage.Stage;
 
 public class PostApplication extends Application {
 
-    private static final double SCENE_WIDTH = 900;
+    private static final double SCENE_WIDTH = 1600;
     private static final double SCENE_HEIGHT = 950;
 
     public static void main(String[] args) {
@@ -24,8 +25,8 @@ public class PostApplication extends Application {
         //------------------------------------------------------------------------------------------------------
         singletonConstantStorage.setBEL_TIME_HOURS(21);
         singletonConstantStorage.setBEL_POL_HOUR_SHIFT(2);
-        singletonConstantStorage.setBEL_TIME_MINUTES(30);
-        singletonConstantStorage.setPostTags(new String[]{"strym", "disciples"});
+        singletonConstantStorage.setBEL_TIME_MINUTES(00);
+        singletonConstantStorage.setPostTags(Tags.MIN);
         singletonConstantStorage.setYoutubeTags(new String[]{"Małatok", "strym", "disciples", "pabiełarusku"});
         //------------------------------------------------------------------------------------------------------
         //------------------------------------------------------------------------------------------------------

@@ -1,9 +1,13 @@
 package by.malatok.post.util;
 
+import by.malatok.post.setup.Tags;
+
+import java.util.List;
+
 public class SingletonConstantStorage {
 
 
-    private String[] postTags;
+    private Tags tags;
     private String[] youtubeTags;
     private Integer BEL_TIME_HOURS;
 
@@ -23,12 +27,15 @@ public class SingletonConstantStorage {
     }
 
 
-    public String[] getPostTags() {
-        return postTags;
+    public List<String> getPostTags() {
+        if (tags == null) {
+            return Tags.MIN.getTags();
+        }
+        return tags.getTags();
     }
 
-    public void setPostTags(String[] postTags) {
-        this.postTags = postTags;
+    public void setPostTags(Tags tags) {
+        this.tags = tags;
     }
 
     public String[] getYoutubeTags() {
