@@ -4,7 +4,7 @@ public enum Mode {
     MASTADON(":by:"),
     TELEGRAM("❤️"),
     YOUTUBE(""),
-    FACEBOOK("❤️");
+    DISCORD("❤️");
 
     private final String belSymbol;
 

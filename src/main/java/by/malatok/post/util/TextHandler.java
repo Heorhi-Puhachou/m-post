@@ -11,6 +11,10 @@ public class TextHandler {
     private final KLKanvertar kanvertar;
 
     private static final String TWITCH_LINK = "https://twitch.tv/malatok2334";
+    private static final String X_LINK = "https://x.com/Malatok2334";
+    private static final String FACEBOOK_LINK = "https://www.facebook.com/groups/malatok2334";
+    private static final String TIKTOK_LINK = "https://www.tiktok.com/@bielaruski.malatok/";
+    private static final String TELEGRAM_LINK = "https://t.me/malatok2334";
     private final SingletonConstantStorage singletonConstantStorage;
 
     public TextHandler() {
@@ -18,7 +22,14 @@ public class TextHandler {
         singletonConstantStorage = SingletonConstantStorage.getInstance();
     }
 
-    public String getText(String originalText, String link, Mode mode) {
+    public String getText(String originalText,
+                          String link,
+                          Mode mode,
+                          Boolean youtube,
+                          Boolean twitch,
+                          Boolean telegram,
+                          Boolean facebook,
+                          Boolean tiktok) {
         final List<String> tags = singletonConstantStorage.getPostTags();
 
         StringBuilder result = new StringBuilder();
@@ -30,10 +41,27 @@ public class TextHandler {
             result.append("\n\n");
             result.append(originalText);
             result.append("\n\n");
-            result.append(link);
+            if (youtube) {
+                result.append("YouTube - " + link);
+                result.append("\n");
+            }
+            if (twitch) {
+                result.append("Twitch - " + TWITCH_LINK);
+                result.append("\n");
+            }
+            if (telegram) {
+                result.append("Telegram - " + TELEGRAM_LINK);
+                result.append("\n");
+            }
+            if (facebook) {
+                result.append("Facebook - " + FACEBOOK_LINK);
+                result.append("\n");
+            }
+            if (tiktok) {
+                result.append("TikTok - " + TIKTOK_LINK);
+                result.append("\n");
+            }
             result.append("\n");
-            result.append(TWITCH_LINK);
-            result.append("\n\n");
             result.append(buildTime(mode));
             result.append("\n\n");
             result.append(buildTagString(tags));
@@ -51,20 +79,73 @@ public class TextHandler {
             return result.toString().trim();
         }
 
-        // if (mode == Mode.TELEGRAM || mode == Mode.FACEBOOK) {
-        result.append(buildTagString(tags));
-        result.append("\n\n");
-        result.append(kanvertar.kanvertavać(originalText));
-        result.append("\n\n");
-        result.append("***");
-        result.append("\n\n");
-        result.append(originalText);
-        result.append("\n\n");
-        result.append(link);
-        result.append("\n");
-        result.append(TWITCH_LINK);
-        result.append("\n\n");
-        result.append(buildTime(mode));
+        if (mode == Mode.TELEGRAM) {
+            result.append(buildTagString(tags));
+            result.append("\n\n");
+            result.append(kanvertar.kanvertavać(originalText));
+            result.append("\n\n");
+            result.append("***");
+            result.append("\n\n");
+            result.append(originalText);
+
+            result.append("\n\n");
+            if (youtube) {
+                result.append("YouTube - " + link);
+                result.append("\n");
+            }
+            if (twitch) {
+                result.append("Twitch - " + TWITCH_LINK);
+                result.append("\n");
+            }
+            if (telegram) {
+                result.append("Telegram - " + TELEGRAM_LINK);
+                result.append("\n");
+            }
+            if (facebook) {
+                result.append("Facebook - " + FACEBOOK_LINK);
+                result.append("\n");
+            }
+            if (tiktok) {
+                result.append("TikTok - " + TIKTOK_LINK);
+                result.append("\n");
+            }
+            result.append("\n");
+
+            result.append(buildTime(mode));
+        }
+
+        if (mode == Mode.DISCORD) {
+            result.append(kanvertar.kanvertavać(originalText));
+            result.append("\n\n");
+            result.append("***");
+            result.append("\n\n");
+            result.append(originalText);
+
+            result.append("\n\n");
+            if (youtube) {
+                result.append("YouTube - " + link);
+                result.append("\n");
+            }
+            if (twitch) {
+                result.append("Twitch - " + TWITCH_LINK);
+                result.append("\n");
+            }
+            if (telegram) {
+                result.append("Telegram - " + TELEGRAM_LINK);
+                result.append("\n");
+            }
+            if (facebook) {
+                result.append("Facebook - " + FACEBOOK_LINK);
+                result.append("\n");
+            }
+            if (tiktok) {
+                result.append("TikTok - " + TIKTOK_LINK);
+                result.append("\n");
+            }
+            result.append("\n");
+
+            result.append(buildTime(mode));
+        }
         return result.toString().trim();
     }
 

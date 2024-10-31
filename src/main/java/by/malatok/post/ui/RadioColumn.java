@@ -5,18 +5,17 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 
-public class RadioBox extends VBox {
+public class RadioColumn extends VBox {
 
     ToggleGroup toggleGroup = new ToggleGroup();
 
-    public RadioBox() {
+    public RadioColumn() {
         super();
 
         for (Tags tags : Tags.values()) {
-            RadioButton radioButton = new RadioButton(tags.name());
-            radioButton.setToggleGroup(toggleGroup);
-            radioButton.getProperties().put("name", tags.name());
-            this.getChildren().add(radioButton);
+            tags.getRadioButton().setToggleGroup(toggleGroup);
+            tags.getRadioButton().getProperties().put("name", tags.name());
+            this.getChildren().add(tags.getRadioButton());
         }
     }
 

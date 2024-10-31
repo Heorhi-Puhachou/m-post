@@ -2,12 +2,14 @@ package by.malatok.post.util;
 
 import by.malatok.post.setup.Tags;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SingletonConstantStorage {
 
 
     private Tags tags;
+    private final List<String> customTags = new ArrayList<>();
     private String[] youtubeTags;
     private Integer BEL_TIME_HOURS;
 
@@ -26,16 +28,25 @@ public class SingletonConstantStorage {
         return instance;
     }
 
+    public void rewriteCustomTags(List<String> newCustomTags) {
+        customTags.clear();
+        customTags.addAll(newCustomTags);
+    }
+
 
     public List<String> getPostTags() {
+        List<String> result = new ArrayList<>(customTags);
         if (tags == null) {
-            return Tags.MIN.getTags();
+            result.addAll(Tags.MIN.getTags());
+        } else {
+            result.addAll(tags.getTags());
         }
-        return tags.getTags();
+        return result;
     }
 
     public void setPostTags(Tags tags) {
         this.tags = tags;
+        this.tags.getRadioButton().setSelected(true);
     }
 
     public String[] getYoutubeTags() {
